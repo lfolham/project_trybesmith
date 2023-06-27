@@ -1,18 +1,18 @@
-import ProductModel from "../database/models/product.model";
+import ProductModel from '../database/models/product.model';
 
 import { Product } from '../types/Product';
 import { ServiceResponse } from '../types/serviceResponse';
 
 async function create(product:Product): Promise<ServiceResponse<Product>> {
-    const newProduct = await ProductModel.create(product);
+  const newProduct = await ProductModel.create(product);
 
-    const response: ServiceResponse<Product> = {
-        status: 'SUCCESSFUL', data: newProduct.dataValues
-    };
+  const response: ServiceResponse<Product> = {
+    status: 'SUCCESSFUL', data: newProduct.dataValues,
+  };
 
-    return response;
+  return response;
 }
 
 export default {
-    create,
+  create,
 };

@@ -1,7 +1,7 @@
 import ProductModel from "../database/models/product.model";
 
 import { Product } from '../types/Product';
-import { ServiceResponse } from '../types/serviceRespose';
+import { ServiceResponse } from '../types/serviceResponse';
 
 async function create(product:Product): Promise<ServiceResponse<Product>> {
     const newProduct = await ProductModel.create(product);

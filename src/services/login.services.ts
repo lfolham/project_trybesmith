@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import jwtUtil from '../utils/jwt.util';
 import { ServiceResponse } from '../types/ServiceResponse';
 import UserModel from '../database/models/user.model';
@@ -9,9 +10,9 @@ async function validateLogin(login: Login): Promise<ServiceResponse<Token>> {
     return { status: 'INVALID_DATA', data: { message: '"username" and "password" are required' } };
   }
 
-  const foundUser = await UserModel.findOne({ where: { id: login.username } });
+  const foundUser = await UserModel.findOne({ where: { username: login.username } });
 
-  if (!foundUser || foundUser.dataValues.password !== login.password) {
+  if (!foundUser || !bcrypt.compareSync(login.password, foundUser.dataValues.password)) {
     return { status: 'UNAUTHORIZED', data: { message: 'Username or password invalid' } };
   }
 

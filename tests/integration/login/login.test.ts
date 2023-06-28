@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 
 describe('POST /login', function () { 
   beforeEach(function () { sinon.restore(); });
-    it('ao não receber um e-mail, retorne um erro', async function () {
+    it('Retorne um erro caso não receba um e-amail válido', async function () {
     const httpRequestBody = loginMock.noEmailLoginBody;
 
     const httpResponse = await chai.request(App).post('/login').send(httpRequestBody);
@@ -19,7 +19,7 @@ describe('POST /login', function () {
     expect(httpResponse.body).to.be.deep.equal({ message: '"username" and "password" are required' });
 });
 
-it('ao não receber uma senha, retorne um erro', async function () {
+it('Retorne um erro caso não receba uma senha válida', async function () {
   const httpRequestBody = loginMock.noPasswordLoginBody
 
   const httpResponse = await chai.request(App).post('/login').send(httpRequestBody);
@@ -28,7 +28,7 @@ it('ao não receber uma senha, retorne um erro', async function () {
   expect(httpResponse.body).to.be.deep.equal({ message: '"username" and "password" are required' });
 });
 
-it('ao receber um e-mail inexistente, retorne um erro', async function () {
+it('Retorne um erro caso receba um e-amail inexistente', async function () {
   const httpRequestBody = loginMock.notExistingUserBody
   sinon.stub(UserModel, 'findOne').resolves(null);
 
@@ -38,7 +38,7 @@ it('ao receber um e-mail inexistente, retorne um erro', async function () {
   expect(httpResponse.body).to.be.deep.equal({ message: 'Username or password invalid' });
 });
 
-it('ao receber um e-mail existente e uma senha errada, retorne um erro', async function () {
+it('Retorne um erro caso receba um e-amail existente e uma senha errada', async function () {
 
   const httpRequestBody = loginMock.existingUserWithWrongPasswordBody 
   const mockFindOneReturn = UserModel.build(loginMock.existingUser);
@@ -52,7 +52,7 @@ it('ao receber um e-mail existente e uma senha errada, retorne um erro', async f
   expect(httpResponse.body).to.be.deep.equal({ message: 'Username or password invalid' });
 });
 
-it('ao receber um e-mail e uma senha válida, retorne um token de login', async function () {
+it('Retorne um token', async function () {
   const httpRequestBody = loginMock.validLoginBody
   const mockFindOneReturn = UserModel.build(loginMock.existingUser);
   sinon.stub(UserModel, 'findOne').resolves(mockFindOneReturn);

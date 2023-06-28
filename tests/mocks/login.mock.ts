@@ -1,8 +1,12 @@
+//exemplo do course do dia 04 - Testes de
+
+//exemplo do course do dia 04 - Aplicando BCripy
+
 const validPassword = 'ch4ng3m3';
 const noEmailLoginBody = { username: '', password: validPassword };
-const validUsername = 'Hagar';
+const validUsername = 'Eddie';
 const noPasswordLoginBody = { username: validUsername, password: '' };
-const notExistingUserBody = { username: 'notfound@email.com', password: validPassword };
+const notExistingUserBody = { username: 'trybe@trybe.com', password: validPassword };
 const validLoginBody = { username: validUsername, password: validPassword };
 const existingUserWithWrongPasswordBody = { username: validUsername, password: 'wrong_password' };
 const hashedPassword = '$2a$10$lQGsGScdxhjGRuYVJX3PX.347IWLNiSk6hOiMmjxlzLEI32lg5LMW';

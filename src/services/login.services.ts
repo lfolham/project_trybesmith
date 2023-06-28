@@ -1,24 +1,25 @@
 import jwtUtil from '../utils/jwt.util';
 import { ServiceResponse } from '../types/ServiceResponse';
-import UserModel, { UserSequelizeModel } from '../database/models/user.model';
+import UserModel from '../database/models/user.model';
 import { Token } from '../types/Token';
 import { Login } from '../types/Login';
 
 async function validateLogin(login: Login): Promise<ServiceResponse<Token>> {
   if (!login.username || !login.password) {
-    return { status: 'INVALID_DATA', data: { message: 'Dados inválidos' } };
+    return { status: 'INVALID_DATA', data: { message: '"username" and "password" are required' } };
   }
-  const user: UserSequelizeModel | null = await UserModel
-    .findOne({ where: { username: login.username } });
-  if (!user) {
-    return { status: 'ERROR', data: { message: 'Usuário não encontrado' } };
+
+  const foundUser = await UserModel.findOne({ where: { id: login.username } });
+
+  if (!foundUser || foundUser.dataValues.password !== login.password) {
+    return { status: 'UNAUTHORIZED', data: { message: 'Username or password invalid' } };
   }
-  const passwordMatches: boolean = await user.comparePassword(login.password);
-  if (!passwordMatches) {
-    return { status: 'ERROR', data: { message: 'Senha incorreta' } };
-  }
-  const token: string = jwtUtil.generateToken(user.id);
-  return { status: 'OK', data: { token } };
+
+  const { id, username } = foundUser.dataValues;
+
+  const token = jwtUtil.sign({ id, username });
+
+  return { status: 'SUCCESSFUL', data: { token } };
 }
 
 export default {

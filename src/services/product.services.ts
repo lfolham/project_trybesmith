@@ -1,7 +1,7 @@
 import ProductModel, { ProductSequelizeModel } from '../database/models/product.model';
 
 import { Product } from '../types/Product';
-import { ServiceResponse } from '../types/serviceResponse';
+import { ServiceResponse } from '../types/ServiceResponse';
 
 async function list(): Promise<ServiceResponse<ProductSequelizeModel[]>> {
   const productsList = await ProductModel.findAll();
